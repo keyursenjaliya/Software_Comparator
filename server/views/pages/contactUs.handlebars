@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{ title }}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputName" class="sr-only">Full Name</label>
+                <input type="text" id="contact-us-name" name="name" class="form-control contact-us-input"
+                    placeholder="Name" required="">
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" id="contact-us-email" name="email" class="form-control contact-us-input"
+                    placeholder="Email address" required="">
+
+                <label for="inputMess" class="sr-only">Message</label>
+                <input type="text" id="contact-us-message" name="message" class="form-control contact-us-input"
+                    placeholder="Message" required="">
+
+                <button class="btn btn-lg btn-primary btn-block contact-us-input" type="submit"
+                    onclick="triggerContactUs()">
+                    Send Message</button>
+                <br>
+                <h4 class="contact-us-input" id="success-message" style="color: green; display: none;">Succesfully
+                    received your
+                    message</h4>
+            </div>
+
+            <div class="card col-md-6" style="margin-top: 10px;">
+                <ul class="list-group list-group-flush">
+                    <ul class="developer-names">
+                        <li>Shubham Jiyani</li>
+                        <li>Yash Anghan</li>
+                        <li>Jainam Damanwala</li>
+                        <li>Hardi Patel</li>
+                    </ul>
+
+                    <dl class="additional-details">
+                        <dt>Address</dt>
+                        <dd>Stevens institute of technology, Hoboken, NJ, 07030</dd>
+                        <dt>Contact Number</dt>
+                        <dd>+(551)(554)(2363)</dd>
+                        <dt>Contact Email</dt>
+                        <dd>softwaresuggestion@demo.com</dd>
+                        <dt>Guided by</dt>
+                        <dd>Prof. Patrick Hill</dd>
+                    </dl>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{> footer }}
+    {{> javascript}}
+</body>
+
+<script>
+    function triggerContactUs() {
+        if (!dataFilled()) {
+            return;
+        }
+        var name = document.getElementById("contact-us-name").value;
+        var email = document.getElementById("contact-us-email").value;
+        var message = document.getElementById("contact-us-message").value;
+
+        var saveData = $.ajax({
+            type: 'POST',
+            url: "/contactUs",
+            data: {
+                name: name,
+                email: email,
+                message: message
+            },
+            success: function (resultData) {
+                var message = document.getElementById("success-message");
+                message.style.display = 'block';
+            }
+        });
+
+        saveData.error(function () { alert("Something went wrong"); });
+    }
+
+    function dataFilled() {
+        var name = document.getElementById("contact-us-name").value;
+        var email = document.getElementById("contact-us-email").value;
+        var message = document.getElementById("contact-us-message").value;
+
+        return name && email && message;
+    }
+</script>
+
+</html>

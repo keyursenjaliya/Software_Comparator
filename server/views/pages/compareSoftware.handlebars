@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{title}}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h4 class="text-muted">{{softwareOne.name}} v/s {{softwareTwo.name}}</h4>
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+            <div class="card col-md-6 col-md-offset-3" style="margin-right: 40px;">
+                <img class="center-block" src={{gravatarOne}} alt="Card image cap">
+                <div class="card-body" style="margin-top: 10px;margin-left: 10px;margin-bottom: 10px;">
+                    <h5 class="card-title">{{softwareOne.name}}</h5>
+                    <p class="card-text">{{softwareOne.details}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">catagory: {{softwareOne.catagory}}</li>
+                    <li class="list-group-item">Overall Rating: {{roundDecimal softwareOne.rating}}</li>
+                    <li class="list-group-item">Developer: {{softwareOne.developerName}}</li>
+                    <li class="list-group-item">Subscription Price: {{softwareOne.subscriptionPrice}}</li>
+                    <li class="list-group-item">Currently trending in {{softwareOne.catagory}}</li>
+                </ul>
+            </div>
+
+            <div class="card col-md-6">
+                <img class="center-block" src={{gravatarTwo}} alt="Card image cap">
+                <div class="card-body" style="margin-top: 10px;margin-left: 10px;margin-bottom: 10px;">
+                    <h5 class="card-title">{{softwareTwo.name}}</h5>
+                    <p class="card-text">{{softwareTwo.details}}</p>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">catagory: {{softwareTwo.catagory}}</li>
+                    <li class="list-group-item">Overall Rating: {{roundDecimal softwareTwo.rating}}</li>
+                    <li class="list-group-item">Developer: {{softwareTwo.developerName}}</li>
+                    <li class="list-group-item">Subscription Price: {{softwareTwo.subscriptionPrice}}</li>
+                    <li class="list-group-item">Currently trending in {{softwareTwo.catagory}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {{> footer}}
+    {{> javascript }}
+</body>
+
+
+</html>

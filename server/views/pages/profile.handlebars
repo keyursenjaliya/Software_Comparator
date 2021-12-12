@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{title}}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+
+    <div class="container">
+        <h1>
+            {{title}}
+        </h1>
+        <div class="datails">
+            <div class="card text-xs-center center-block">
+                <br>
+                <img class="card-img-top" src="{{ avatar }}">
+                <div class="card-block">
+                    <h4 class="card-title">User Details</h4>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">First Name: {{user.local.firstName}}</li>
+                        <li class="list-group-item">Last Name: {{user.local.lastName}}</li>
+                        <li class="list-group-item">User name: {{user.local.username}}</li>
+                        <li class="list-group-item">City: {{user.local.city}}</li>
+                        <li class="list-group-item">Country: {{user.local.country}}</li>
+                        <li class="list-group-item">Phone: {{user.local.phone}}</li>
+                    </ul>
+
+                    <a href="/logout" class="btn btn-default">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{> footer }}
+    {{> javascript}}
+</body>
+
+</html>

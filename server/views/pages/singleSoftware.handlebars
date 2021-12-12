@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{title}}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                {{#unless software}}
+                    <h4 class="text-muted">Opps! Item not found</h4>
+                {{/unless}}
+            </div>
+
+            {{#if software}}
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-secondary pull-right" data-toggle="modal"
+                    data-target="#createComment">
+                    Create Comment
+                </button>
+            </div>
+            {{/if}}
+        </div>
+
+        {{#if software}}
+            <div class="card center-block" style="width: 18rem;">
+                <img class="center-block" src={{gravatar}} alt="Card image cap">
+                <div class="card-body" style="margin-top: 10px;margin-left: 10px;margin-bottom: 10px;">
+                    <h5 class="card-title">{{software.name}}</h5>
+                    <p class="card-text">{{software.details}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Tag: {{software.catagory}}</li>
+                    <li class="list-group-item">Overall Rating: {{roundDecimal software.rating}}</li>
+                    <li class="list-group-item">Developer: {{software.developerName}}</li>
+                    <li class="list-group-item">Subscription Price: {{software.subscriptionPrice}}</li>
+                    <li class="list-group-item">Currently trending in {{software.catagory}}</li>
+                </ul>
+            </div>
+
+            {{!-- <Modal Start> --}}
+            <div class="modal fade" id="createComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="/comments" method="post">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    Create Comment</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <fieldset class="form-group">
+                                    <label for="comment-content">Comment</label>
+                                    <input id="comment-content" name="content" class="form-control"
+                                        placeholder="Comment Description" required="true" oninput="checkCommentContent()">
+                                    <input type="hidden" name="softwareId" value="{{software.id}}">
+                                </fieldset>
+
+                                <fieldset class="form-group">
+                                    <label for="inputContent">Rating</label>
+                                    <input class="form-control" type="number" id="comment-rating" oninput="checkCommentContent()" required="true" placeholder="Rate in scale of 1-5" min="0" max="5" name="rating">
+                                </fieldset>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button style="pointer-events: none;" id="add-comment-btn" type="submit" class="btn btn-default">
+                                    Add Comment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{!-- <Modal End> --}}
+
+            <div class="list-group" style="margin-bottom: 15px;">
+                <h4>User reviews</h4>
+                {{#each software.comments}}
+                    <a href="#" class="list-group-item">
+                        <div class="comments">
+                            <p class="list-group-item-text">
+                                {{content}}
+                            </p>
+                            <small class="text-muted">Review by: {{user.local.firstName }} <br>
+                            <strong class="text-muted">Rating: {{roundDecimal rating}}
+                            </strong>
+
+                            </small>
+                        </div>
+                    </a>
+                {{/each}}
+            </div>
+
+        {{/if}}
+    </div>
+
+    {{> footer}}
+    {{> javascript }}
+</body>
+
+<script>
+    function checkCommentContent() {
+        var btn = document.getElementById('add-comment-btn');
+        var comment = document.getElementById('comment-content');
+        var rating = document.getElementById('comment-rating')
+        console.log([0,1,2,3,4,5].indexOf(rating.value))
+
+        if (comment.value && comment.value.trim() &&
+            ['0','1','2','3','4','5'].indexOf(rating.value) != -1) {
+            btn.style.pointerEvents = 'all';
+            btn.classList.add('btn-primary');
+        } else {
+            btn.style.pointerEvents = 'none';
+            btn.classList.remove('btn-primary');
+        }
+    }
+</script>
+
+</html>

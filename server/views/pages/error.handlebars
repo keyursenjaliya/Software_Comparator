@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{error.status}} :(</title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+
+    <div class="container">
+        <div class="page-header m-t-1">
+            <h1>Sorry :(
+            </h1>
+            <h2>
+               {{error.status}}
+            </h2>
+            <pre>{{error.stack  }}</pre>
+        </div>
+
+    </div>
+    {{> footer}}
+    {{> javascript }}
+</body>
+
+</html>

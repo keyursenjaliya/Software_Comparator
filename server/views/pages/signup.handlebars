@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{ title }}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+    <div class="container">
+        {{#if message.length }}
+            <div class="alert alert-warning" role="alert">
+                <strong>Error!</strong>
+                {{message}}
+            </div>
+        {{/if}}
+
+        <form class="form-signin" action="/signup" method="post">
+            <h2 class="form-signin-heading">Please signup</h2>
+            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" required="">
+            <input type="text" id="lastname" name="lastName" class="form-control" placeholder="Last Name" required="">
+            <input type="text" id="username" name="username" class="form-control" placeholder="User name" required="">
+            <input type="text" id="city" name="city" class="form-control" placeholder="City" required="">
+            <input type="text" id="country" name="country" class="form-control" placeholder="Country" required="">
+            <input type="text" id="state" name="state" class="form-control" placeholder="State" required="">
+            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone number" required="">
+
+            <input type="email" id="email" name="email" class="form-control" placeholder="Email address"
+                required="">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                required="">
+
+            <label for="userRole">User Role</label>
+            <input name="role" id="userRole" value="1" checked type="radio">
+            <label for="verndorRole">Vendor Role</label>
+            <input name="role" id="verndorRole" value="0" type="radio">
+
+            <button class="btn btn-lg btn-primary btn-block" style="margin-top: 10px;" type="submit">Sign Up</button>
+            <br>
+        </form>
+    </div>
+
+    {{> footer }}
+    {{> javascript}}
+</body>
+
+</html>

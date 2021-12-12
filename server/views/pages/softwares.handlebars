@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        {{title}}
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h4 class="text-muted">Softwares</h4>
+            </div>
+        </div>
+        <hr />
+
+        <form action="/softwares/search" method="get">
+            <div class="row text-center">
+                <input type="text" name="searchQuery" placeholder="Search by catagory" class="form-control center-block"
+                    style="width: 60%;" />
+                <button class="btn btn-primary search-button">Search</button>
+            </div>
+        </form>
+
+        {{#if topSoftwares}}
+        <h3>Top Softwares</h3>
+        {{/if}}
+        {{#unless topSoftwares}}
+        <h3>Searched Softwares for : {{searchQuery}}</h3>
+        {{/unless}}
+
+        <div class="pull-right" style="display: flex;width: 15%;">
+            <strong style="width: 100%; margin-top: 6px;" class="text-center">Sort by</strong>
+            <select class="form-control" id='sort-option' style="margin-bottom: 10px;" onchange="insertParam(this.value)">
+                <option value="name">Name</option>
+                <option value="rating">Rating</option>
+                <option value="catagory">Catagory</option>
+            </select>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Catagory</th>
+                    <th scope="col">Rating</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each softwares as | soft | }}
+                <tr>
+                    <th scope="row">{{inc @index}}</th>
+                    <td><a href="/softwares/{{id}}" target="_blank">{{name}}</a></td>
+                    <td>{{catagory}}</td>
+                    <td>{{roundDecimal rating}}</td>
+                    <td><input type="checkbox" name="softwareId" value="{{id}}" onchange="triggerComparebutton()"></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <div class="row text-center">
+            <button class="btn search-button" style="pointer-events:none" id="compare-button"
+                onclick="compareSoftware()">Compare</button>
+            <p style="color: red; margin-top: 5px;" id="note">Note: select any 2 softwares to compare</p>
+        </div>
+    </div>
+
+    {{> footer}}
+    {{> javascript }}
+</body>
+
+<script>
+    function triggerComparebutton() {
+        var $boxes = $('input[name=softwareId]:checked');
+        var count = $boxes.length;
+        var button = document.getElementById('compare-button')
+
+        if (count == 2) {
+            button.classList.add('btn-primary');
+            button.style.pointerEvents = 'all';
+        } else {
+            button.classList.remove('btn-primary');
+            button.style.pointerEvents = 'none';
+        }
+    }
+
+    function compareSoftware() {
+        var $boxes = $('input[name=softwareId]:checked');
+        var boxOne = $boxes[0];
+        var boxTwo = $boxes[1];
+        var url = "/softwares/compare?softwareOne=" + boxOne.value +
+            "&softwareTwo=" + boxTwo.value;
+        window.open(url, '_blank');
+    }
+
+    function sortChanged(value) {
+
+    }
+
+    function insertParam(value) {
+        key = encodeURIComponent('sortByField');
+        value = encodeURIComponent(value);
+
+        // kvp looks like ['key1=value1', 'key2=value2', ...]
+        var kvp = document.location.search.substr(1).split('&');
+        let i = 0;
+
+        for (; i < kvp.length; i++) {
+            if (kvp[i].startsWith(key + '=')) {
+                let pair = kvp[i].split('=');
+                pair[1] = value;
+                kvp[i] = pair.join('=');
+                break;
+            }
+        }
+
+        if (i >= kvp.length) {
+            kvp[kvp.length] = [key, value].join('=');
+        }
+
+        // can return this or...
+        let params = kvp.join('&');
+
+        // reload page with new params
+        document.location.search = params;
+    }
+
+    function selectOption(index){
+        document.getElementById("sort-option").options.selectedIndex = index;
+    }
+
+    window.onload = function() {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+
+        if (params.sortByField) {
+            var map = {
+                name: 0,
+                rating: 1,
+                catagory: 2,
+            }
+            selectOption(params.sortByField);
+        } else {
+            selectOption(1);
+        }
+
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Vendor
+    </title>
+    {{> stylesheet }}
+</head>
+
+<body>
+    {{> header }}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Hello Vendor</h3>
+            </div>
+
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-secondary pull-right" data-toggle="modal"
+                    data-target="#createSoftware">
+                    Create Software
+                </button>
+            </div>
+        </div>
+
+        {{!-- Create Software Modal --}}
+        <div class="modal fade" id="createSoftware" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="/vendor" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                Create Software</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <fieldset class="form-group">
+                                <label for="new-software-name">Name</label>
+                                <input type="text" id="new-software-name" name="name" class="form-control" oninput="checkNewSoftwareContent()"
+                                    placeholder="Software name" required="">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="new-software-catagory">catagory</label>
+                                <input type="text" id="new-software-catagory" name="catagory" class="form-control" oninput="checkNewSoftwareContent()"
+                                    placeholder="Software catagory" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="new-software-details">Details</label>
+                                <input id="new-software-details" name="details" class="form-control" oninput="checkNewSoftwareContent()"
+                                    placeholder="Software Description" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="new-software-dev-name">Developer Name</label>
+                                <input id="new-software-dev-name" name="developerName" class="form-control" oninput="checkNewSoftwareContent()"
+                                    placeholder="Software Developer" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="new-software-price">Subscription price</label>
+                                <input id="new-software-price" type="number" name="subscriptionPrice" class="form-control" oninput="checkNewSoftwareContent()"
+                                    required="true">
+                            </fieldset>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" id="add-new-software" style="pointer-events: none;" class="btn btn-default">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- End Create Software Modal --}}
+
+        {{!-- Edit software modal --}}
+        <div class="modal fade" id="editSoftware" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="/vendor/edit" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                Edit Software</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="hidden" id="updateSoftwareId" name="updateSoftwareId">
+                            <fieldset class="form-group">
+                                <label for="edit-software-name">Name</label>
+                                <input type="text" id="edit-software-name" name="name" class="form-control" oninput="checkEditSoftwareContent()"
+                                    placeholder="Software name" required="">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="edit-software-catagory">catagory</label>
+                                <input type="text" id="edit-software-catagory" name="catagory" class="form-control" oninput="checkEditSoftwareContent()"
+                                    placeholder="Software catagory" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="edit-software-detail">Details</label>
+                                <input id="edit-software-detail" name="details" class="form-control" oninput="checkEditSoftwareContent()"
+                                    placeholder="Software Description" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="edit-software-dev-name">Developer Name</label>
+                                <input id="edit-software-dev-name" name="developerName" class="form-control" oninput="checkEditSoftwareContent()"
+                                    placeholder="Software Developer" required="true">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <label for="edit-software-price">Subscription price</label>
+                                <input id="edit-software-price" type="number" onkeyup="if(this.value<0){this.value= this.value * -1}" name="subscriptionPrice" class="form-control" oninput="checkEditSoftwareContent()"
+                                    required="true">
+                            </fieldset>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" id="edit-new-software" style="pointer-events: none;" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <table class="table" style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">catagory</th>
+                    <th scope="col">Rating</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each softwares}}
+                <tr>
+                    <th scope="row">{{inc @index}}</th>
+                    <td><strong><i>{{name}}</i></strong></td>
+                    <td>{{catagory}}</td>
+                    <td>{{roundDecimal rating}}</td>
+                    <td>
+                        <button class="btn btn-primary" data-target="#editSoftware" data-toggle="modal"
+                            onclick="setTempVar('{{this.id}}', '{{this.name}}', '{{this.catagory}}', '{{this.details}}', '{{this.developerName}}', '{{this.subscriptionPrice}}')">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <form method="get" action="/vendor/delete">
+                            <input type="hidden" name="deleteSoftwareId" value={{id}} />
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    {{> footer}}
+    {{> javascript }}
+</body>
+
+<script>
+    function setTempVar(id, name, catagory, details, developerName, subscriptionPrice) {
+        document.getElementById('updateSoftwareId').value = id;
+        document.getElementById('edit-software-name').value = name;
+        document.getElementById('edit-software-catagory').value = catagory;
+        document.getElementById('edit-software-detail').value = details;
+        document.getElementById('edit-software-dev-name').value = developerName;
+        document.getElementById('edit-software-price').value = subscriptionPrice;
+    }
+
+    function checkNewSoftwareContent() {
+        var name = document.getElementById('new-software-name').value;
+        var catagory = document.getElementById('new-software-catagory').value;
+        var details = document.getElementById('new-software-details').value;
+        var developerName = document.getElementById('new-software-dev-name').value;
+        var subscriptionPrice = document.getElementById('new-software-price').value;
+        var btn = document.getElementById('add-new-software');
+
+        if (name.trim() && catagory.trim() && details.trim() &&
+            developerName.trim() && subscriptionPrice.trim()) {
+            btn.style.pointerEvents = 'all';
+            btn.classList.add('btn-primary');
+        } else {
+            btn.style.pointerEvents = 'none';
+            btn.classList.remove('btn-primary');
+        }
+    }
+
+    function checkEditSoftwareContent() {
+        var name = document.getElementById('edit-software-name').value;
+        var catagory = document.getElementById('edit-software-catagory').value;
+        var details = document.getElementById('edit-software-detail').value;
+        var developerName = document.getElementById('edit-software-dev-name').value;
+        var subscriptionPrice = document.getElementById('edit-software-price').value;
+        var btn = document.getElementById('edit-new-software');
+
+        if (name.trim() && catagory.trim() && details.trim() &&
+            developerName.trim() && subscriptionPrice.trim()) {
+            btn.style.pointerEvents = 'all';
+            btn.classList.add('btn-primary');
+        } else {
+            btn.style.pointerEvents = 'none';
+            btn.classList.remove('btn-primary');
+        }
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,53 @@
+<!-- Fixed navbar -->
+<div class="pos-f-t">
+    <nav class="navbar navbar-light navbar-static-top">
+        <div class="container">
+            <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse"
+                data-target="#exCollapsingNavbar2">
+                Menu
+            </button>
+
+            <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+                <a class="navbar-brand" href="/">Home</a>
+                <ul class="nav navbar-nav pull-right">
+                    {{#unless isLoggedIn}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">
+                                Sign in
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">
+                                Sign up
+                            </a>
+                        </li>
+                    {{/unless}}
+
+                    {{#if isLoggedIn}}
+                        {{#unless isVendor}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/softwares">Softwares</a>
+                            </li>
+                        {{/unless}}
+
+                        {{#if isVendor}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/vendor">Vendor</a>
+                            </li>
+                        {{/if}}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Profile</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- Fixed navbar -->
